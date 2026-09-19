@@ -305,8 +305,7 @@ The submitted implementation intentionally remains a small deterministic prototy
 
 ## AI usage
 
-I used ChatGPT as a development assistant during the implementation.
-
+I used ChatGPT and Claude as development assistants during the implementation.
 It contributed to:
 
 * troubleshooting the Node.js/npm environment
