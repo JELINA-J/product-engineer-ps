@@ -580,7 +580,7 @@ The submitted implementation intentionally remains a small deterministic prototy
 
 ## AI usage disclosure
 
-This implementation was built with AI assistance (Claude).
+This implementation was built with AI assistance from ChatGPT and Claude.
 
 AI assistance was used for:
 
