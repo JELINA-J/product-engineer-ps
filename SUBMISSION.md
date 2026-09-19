@@ -3,7 +3,7 @@
 ## Candidate
 
 * **Name:** Jelina J
-* **Email:** [jelinaj345@gmail.com](mailto:jelinaj345@gmail.com)
+* **Email:** [22csec12@gmail.com](mailto:jelinaj345@gmail.com)
 * **GitHub:** https://github.com/JELINA-J/product-engineer-ps
 * **Selected problem:** Problem 4 — Trustworthy Long-Term Memory
 * **Demo video:** https://drive.google.com/file/d/1xEtPRVq85fbESt4RT9jPeCxKCysKwnyv/view?usp=drive_link
