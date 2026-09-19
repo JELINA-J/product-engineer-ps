@@ -1,0 +1,151 @@
+@baseUrl = http://localhost:3000
+@scope = demo-recording
+
+
+############################################################
+# 1. STORE A MEMORY + SOURCE MESSAGE
+############################################################
+
+### 1A. Store source message
+# Demo point: A source message is stored first.
+
+# @name createPuneMessage
+POST {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "scope": "{{scope}}",
+  "content": "I live in Pune."
+}
+
+
+### 1B. Create memory from the source message
+# Demo point: The memory keeps the sourceMessageId for provenance.
+
+# @name createPuneMemory
+POST {{baseUrl}}/memories
+Content-Type: application/json
+
+{
+  "scope": "{{scope}}",
+  "content": "I live in Pune.",
+  "topic": "city",
+  "sourceMessageId": "{{createPuneMessage.response.body.$.id}}"
+}
+
+
+############################################################
+# 2. INSPECT SOURCE / PROVENANCE
+############################################################
+
+### 2. Inspect Pune memory and its source
+# Demo point: Show that the memory can be traced back to
+# the original source message.
+
+GET {{baseUrl}}/memories/{{createPuneMemory.response.body.$.memory.id}}
+
+
+############################################################
+# 3. RETRIEVE RELEVANT CONTEXT
+############################################################
+
+### 3A. New message asking about the city
+# Demo point: This represents a new user message.
+
+# @name newCityQuestion
+POST {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "scope": "{{scope}}",
+  "content": "Pune"
+}
+
+
+### 3B. Retrieve relevant memory
+# Demo point: The relevant active memory is returned with
+# observable retrieval evidence.
+
+GET {{baseUrl}}/memories/search?scope={{scope}}&q=Pune
+
+
+############################################################
+# 4. CORRECT THE FACT
+############################################################
+
+### 4A. Store the correction source message
+# Demo point: The user provides a new statement.
+
+# @name createMumbaiMessage
+POST {{baseUrl}}/messages
+Content-Type: application/json
+
+{
+  "scope": "{{scope}}",
+  "content": "I moved to Mumbai."
+}
+
+
+### 4B. Explicitly supersede Pune with Mumbai
+# Demo point: The old fact becomes SUPERSEDED and the
+# new fact becomes ACTIVE.
+
+# @name supersedePune
+POST {{baseUrl}}/memories/{{createPuneMemory.response.body.$.memory.id}}/supersede
+Content-Type: application/json
+
+{
+  "content": "I moved to Mumbai.",
+  "topic": "city",
+  "sourceMessageId": "{{createMumbaiMessage.response.body.$.id}}"
+}
+
+
+############################################################
+# 5. INSPECT SUPERSESSION HISTORY
+############################################################
+
+### 5. Inspect the old Pune memory
+# Demo point: Pune is preserved in history as SUPERSEDED
+# and points to the new Mumbai memory.
+
+GET {{baseUrl}}/memories/{{createPuneMemory.response.body.$.memory.id}}
+
+
+############################################################
+# 6. RETRIEVE CURRENT CONTEXT
+############################################################
+
+### 6. Retrieve current Mumbai memory
+# Demo point: Superseded Pune is excluded from current
+# retrieval. Only the ACTIVE Mumbai memory is returned.
+
+GET {{baseUrl}}/memories/search?scope={{scope}}&q=Mumbai
+
+
+############################################################
+# 7. DELETE CURRENT MEMORY
+############################################################
+
+### 7. Delete Mumbai memory
+# Demo point: The current memory is transitioned to DELETED.
+
+# @name deleteMumbai
+DELETE {{baseUrl}}/memories/{{supersedePune.response.body.$.newMemory.id}}
+
+
+############################################################
+# 8. VERIFY DELETION
+############################################################
+
+### 8. Search after deletion
+# Demo point: Deleted Mumbai memory is no longer returned
+# by normal retrieval.
+
+GET {{baseUrl}}/memories/search?scope={{scope}}&q=Mumbai
+
+
+############################################################
+# 9. DETERMINISTIC BENCHMARK
+############################################################
+

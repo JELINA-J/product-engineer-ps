@@ -1,0 +1,27 @@
+{
+  "name": "trustworthy-memory",
+  "version": "1.0.0",
+  "description": "Trustworthy long-term memory engine — Caygnus Product Engineering Challenge, Problem 4",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "start": "tsx src/index.ts",
+    "test": "vitest run",
+    "benchmark": "tsx benchmark/runner.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "express": "^4.19.2",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.9",
+    "@types/uuid": "^9.0.8",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3",
+    "vitest": "^2.0.5"
+  }
+}
